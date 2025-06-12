@@ -1,16 +1,17 @@
 from flask import Flask, render_template, redirect, abort
 from datetime import datetime
 import pytz
+import os
 
 app = Flask(__name__)
 
-# Konfigurasi waktu login (WIB)
+# Zona waktu WIB
 JAKARTA_TZ = pytz.timezone('Asia/Jakarta')
 LOGIN_START = JAKARTA_TZ.localize(datetime(2025, 6, 12, 19, 30))
 LOGIN_END = JAKARTA_TZ.localize(datetime(2025, 6, 12, 21, 30))
 
-# URL Google Form (RAHASIA, tidak tampil di HTML)
-FORM_URL = "https://forms.gle/epUL9ndhgoSf9oDp9"
+# Gunakan environment variable agar aman
+FORM_URL = os.getenv("FORM_URL", "https://forms.gle/epUL9ndhgoSf9oDp9")
 
 @app.route("/")
 def index():
@@ -27,5 +28,5 @@ def secure_login():
         return abort(403, description="Login tidak tersedia saat ini.")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
