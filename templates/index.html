@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login PPKn</title>
+    <meta charset="UTF-8">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #login-box {
+            width: 350px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            background-color: #fff;
+            text-align: center;
+        }
+        .tombol {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .judul {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .countdown {
+            font-size: 10pt;
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="login-box">
+    <div class="judul">Pendidikan Pancasila dan Kewarganegaraan</div>
+    <img class="logo" src="https://lh3.googleusercontent.com/d/1Em6kwqdZfG27aKHEV8EUv4ehlKPCO_kN" alt="Logo" width="150">
+    <div id="countdown" class="countdown"></div>
+    <button class="tombol" onclick="window.location.href='/secure-login'" id="loginBtn" disabled>Login</button>
+</div>
+
+<script>
+    const startTime = new Date("{{ start_time }}").getTime();
+    const endTime = new Date("{{ end_time }}").getTime();
+    const countdownEl = document.getElementById("countdown");
+    const loginBtn = document.getElementById("loginBtn");
+
+    setInterval(() => {
+        const now = new Date().getTime();
+        if (now >= startTime && now < endTime) {
+            loginBtn.disabled = false;
+            countdownEl.innerHTML = "Login telah dibuka.";
+        } else if (now >= endTime) {
+            loginBtn.disabled = true;
+            countdownEl.innerHTML = "Waktu login telah ditutup.";
+        } else {
+            const distance = startTime - now;
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            countdownEl.innerHTML = `Login akan dibuka dalam: ${d} hari ${h} jam ${m} menit ${s} detik`;
+        }
+    }, 1000);
+</script>
+</body>
+</html>
